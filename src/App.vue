@@ -1,6 +1,7 @@
 <template>
   <div id="nav">
     <nav class="navbar navbar-expand-lg">
+      <img src="./components/LogoPersonnel.jpg" alt="LogoPersonnel" class="nav-logo">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/hotels">Teranga Hôtel</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +10,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/add">Ajouter un hôte</router-link> 
+            <router-link class="nav-link active" aria-current="page" to="/add">Ajouter un hôtel</router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link active" aria-current="page" to="/update">Update hôtel</router-link> 
           </li>
           <li class="nav-item">
             <router-link class="nav-link active" aria-current="page" to="/">Vol + hôtel</router-link> 
@@ -23,16 +27,108 @@
     </div>
   </nav>
   </div>
-  <router-view />
+    <router-view :hotels="hotels" @HotelAdded="addHotel" @HotelUpdateFormList="editHotelForm"
+      @HotelUpdate="saveEditedHotel" :editHotelPros="editedHotel" />
 </template>
 
+
 <script>
+import axios from 'axios';
+import { createRouter, createWebHistory } from 'vue-router';
+import AddHotelForm from './components/AddHotelForm.vue';
+import HotelsList from './components/HotelsList.vue';
+import UpdateHotelForm from './components/UpdateHotelForm.vue';
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/add', component: AddHotelForm },
+    { path: '/hotels', component: HotelsList },
+    { path: '/update', component: UpdateHotelForm },
+  ]
+});
 
 export default {
-  name: 'App',
 
-}
+  name: 'App',
+  data() {
+    return {
+      hotels: [],
+      newHotel: {
+        name: '',
+        city: '',
+        description: '',
+        rating:null,
+      },
+
+      hotelBeingEdited: null,
+      IdBack: null,
+      editedHotel: {
+        city: '',
+        name: '',
+        description: '',
+        rating: null,
+      },
+    };
+  },
+
+  methods: {
+    //Ajouter un hotel
+    addHotel(newHotel) {
+      console.log("ajouté")
+      axios.post('http://localhost:8080/hotel/id', newHotel)
+        .then(() => {
+          this.hotels.push(newHotel);
+          this.newHotel = {
+            name: '',
+            city: '',
+            description: '',
+            rating: null,
+          };
+        })
+        .catch(error => {
+          console.error('Error adding hotel:', error);
+        });
+      this.$router.push('/hotels');
+      setTimeout(() => {
+        window.location.reload();
+      },);
+    },
+    //Modification remplir les inputs en cliquant sur le bouton modifier
+    editHotelForm(index, updateHotelList, IdBackList) {
+      this.editedHotel = updateHotelList
+      this.hotelBeingEdited = index;
+      this.IdBack = IdBackList
+    },
+
+    saveEditedHotel(editedHotel) {
+
+      if (this.hotelBeingEdited !== null) {
+        const updatedHotel = {
+          id: this.IdBack,
+          name: editedHotel.name,
+          city: editedHotel.city,
+          description: editedHotel.description,
+          rating: editedHotel.rating,
+        };
+        console.log("updatedHotel : " + JSON.stringify(updatedHotel))
+        const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
+
+        axios.put(BASE_URL, updatedHotel)
+          .then(() => {
+            this.hotelBeingEdited = null;
+            this.$router.push('/hotels');
+          })
+          .catch(error => {
+            console.error('Error updating hotel:', error);
+          });
+      }
+    },
+  },
+  router
+};
 </script>
+
 
 <style>
 #app {
@@ -64,4 +160,15 @@ export default {
   padding: 5px 10px; /* Espacement intérieur pour la bordure */
   border-radius: 10px; /* Ajouter une bordure arrondie */
 }
+
+.nav-logo {
+  margin-right: 10px; /* Marge à droite de la forme circulaire */
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 16px; /* Marge à droite de l'image */
+}
+
+
 </style>
