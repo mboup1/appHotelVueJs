@@ -2,8 +2,8 @@
     <div id="EditForm" class="container text-center">
         <div id="add" class="row text-center mt-5 ">
             <div class="col-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
-                <div class="bg-white shadow rounded p-4">
-                    <h1 class="display-6 text-dark text-center">Modifier un hotel</h1>
+                <div class="bg-white shadow rounded-5 p-4">
+                    <h1 class="display-6 text-dark text-center bg-success rounded-4 p-2">Modifier un hôtel</h1>
                     <hr class="bg-dark mb-5" />
                     <form @submit.prevent="saveEditedHotel2">
                         <div class="form-group mb-3">
@@ -19,8 +19,12 @@
                             <input v-model="editedHotel.description" type="text" class="form-control" />
                         </div>
                         <div class="form-group mb-3">
+                            <label>Prix</label>
+                            <input v-model="editedHotel.price" type="number" class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
                             <label>Note</label>
-                            <input v-model="editedHotel.rating" type="text" class="form-control" placeholder="Entre 0 et 5" />
+                            <input v-model="editedHotel.rating" type="number" class="form-control" placeholder="Entre 0 et 5" />
                         </div>
                         <div>
                             <button class="btn btn-success me-2 " style="width: 100px" type="submit">Enregistrer</button>
@@ -41,6 +45,7 @@ export default {
             name: '',
             city: '',
             description: '',
+            price: null,
             rating: '',
         },
     },
@@ -53,6 +58,7 @@ export default {
                 name: this.editHotelPros.name,
                 city: this.editHotelPros.city,
                 description: this.editHotelPros.description,
+                price: this.editHotelPros.price,
                 rating: this.editHotelPros.rating,
             },
             members: [],
@@ -61,7 +67,6 @@ export default {
 
     methods: {
         saveEditedHotel2() {
-            console.log(this.hotelBeingEdited)
             this.$emit('HotelUpdate', { ...this.editedHotel });
         },
 

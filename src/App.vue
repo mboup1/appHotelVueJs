@@ -38,6 +38,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AddHotelForm from './components/AddHotelForm.vue';
 import HotelsList from './components/HotelsList.vue';
 import UpdateHotelForm from './components/UpdateHotelForm.vue';
+import ModalHotel from './components/ModalHotel.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -45,6 +46,7 @@ const router = createRouter({
     { path: '/add', component: AddHotelForm },
     { path: '/hotels', component: HotelsList },
     { path: '/update', component: UpdateHotelForm },
+    { path: '/infoshotel', component: ModalHotel },
   ]
 });
 
@@ -58,6 +60,7 @@ export default {
         name: '',
         city: '',
         description: '',
+        price: null,
         rating:null,
       },
 
@@ -67,6 +70,7 @@ export default {
         city: '',
         name: '',
         description: '',
+        price: null,
         rating: null,
       },
     };
@@ -75,7 +79,6 @@ export default {
   methods: {
     //Ajouter un hotel
     addHotel(newHotel) {
-      console.log("ajouté")
       axios.post('http://localhost:8080/hotel/id', newHotel)
         .then(() => {
           this.hotels.push(newHotel);
@@ -83,6 +86,7 @@ export default {
             name: '',
             city: '',
             description: '',
+            price: null,
             rating: null,
           };
         })
@@ -109,9 +113,9 @@ export default {
           name: editedHotel.name,
           city: editedHotel.city,
           description: editedHotel.description,
+          price: editedHotel.price,
           rating: editedHotel.rating,
         };
-        console.log("updatedHotel : " + JSON.stringify(updatedHotel))
         const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
 
         axios.put(BASE_URL, updatedHotel)
@@ -138,6 +142,7 @@ export default {
 }
 #nav {
   font-size: 24px; /* Augmenter la taille du texte à 24px */
+  position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
