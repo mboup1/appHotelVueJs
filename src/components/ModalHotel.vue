@@ -1,20 +1,20 @@
 <template>
     <div class="InfosHotel">
         <div class="container shadow p-4 ">
-            <h5 class="display-6 bg-success rounded-4 p-2">Informations hôtel {{ this.editHotelPros.name }}</h5>
+            <h5 class="display-6 bg-success rounded-4 p-2">Informations hôtel : {{ this.editHotelPros.name }}</h5>
             <hr/>
             <form @submit.prevent="saveEditedHotel2">
                 <div>
-                    <p>Nom : {{ this.editHotelPros.name }}</p>
+                    <p><span>Nom</span> : {{ this.editHotelPros.name }}</p>
                 </div>
                 <div>
-                    <p>Ville : {{ this.editHotelPros.city }}</p>
+                    <p><span>Ville</span> : {{ this.editHotelPros.city }}</p>
                 </div>
                 <div>
-                    <p>Description : {{ this.editHotelPros.description }}</p>
+                    <p class="description"><span>Description</span> : {{ this.editHotelPros.description }}</p>
                 </div>
                 <div>
-                    <p>Prix : {{ this.editHotelPros.price }} €</p>
+                    <p><span>Prix</span> : {{ this.editHotelPros.price }} €</p>
                 </div>
                 <div>
                     <button class="btn btn-success me-2 " style="width: 100px" type="submit">Reserver</button>
@@ -68,11 +68,22 @@ export default {
 
 <style>
 .InfosHotel {
-    margin-top: 100px;
-
+    margin-top: 100px; 
     .container{
         border-radius: 20px;
+        width: 1000px;
     }
-
 }
+.InfosHotel p {
+    font-size: 20px;
+    text-align: justify;
+    margin-left: 20px;
+}
+.description {
+    text-align: justify;
+}
+.InfosHotel span {
+    font-weight: bolder;
+}
+
 </style>

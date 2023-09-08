@@ -1,11 +1,11 @@
 
 <template>
-    <div id="List" class="container pt-5">
+    <div id="List" class="pt-5 hotels-list">
         <h1>Hôtels disponibles</h1>
-        <div class="row ">
-            <div v-for="(hotel, index) in hotels" :key="index" class=" col-xl-4 col-lg-6">
-                <div class="card custom-card" >
-                    <img src="./LogoPersonnel.jpg" class="card-img-top custom-card-image" alt="Image de {{ hotel.name }}" />
+        <div class="row justify-content-center">
+            <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+                <div class="card custom-card"  >
+                    <img src="./LogoPersonnel.jpg" alt="Image de {{ hotel.name }}" />
                     <div style="height: 140px; padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
                             <p> {{ truncateText(hotel.description, 40) }}</p>
@@ -13,7 +13,7 @@
                         <p >Note : <span class="text-warning" v-html="generateStarRating(hotel.rating)"></span></p>
                     </div>
                     <div>
-                         <button class="btn btn-primary m-1 rounded-pill" @click="UpdateHotelModal(index)">
+                         <button class="btn btn-primary rounded-pill" @click="UpdateHotelModal(index)">
                             Plus infos ...
                         </button>
                         <button class="btn btn-success m-1 rounded-pill" @click="edit(index)">
@@ -68,7 +68,7 @@ export default {
 
         deletehotel(hotelId) {
             const hotel_API_BASE_URL = "http://localhost:8080/hotel/";
-            // let conf = confirm(`Etes-vous sûr de vouloir supprimer ${city} ${name} ?`);
+            // let conf = confirm(`Etes-vous sûr de vouloir supprimer ?`);
             // if (conf)
                 axios.delete(hotel_API_BASE_URL + hotelId)
                     .then(() => {
@@ -136,11 +136,13 @@ export default {
 </script>
 
 <style>
+
 .custom-card {
   border: 2px solid #ccc;
-  margin: 10px;
+  margin-top: 15px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s;
+  width: 350px;
 }
 
 .card-body p {
@@ -154,7 +156,20 @@ export default {
     font-size: 25px;
 }
 
+#colCard{
+width: auto
+}
+
 #List{
     margin-top: 70px;
 }
+
+.hotels-list {
+  height: 100vh; /* Fixez la hauteur de la page à 100% de la hauteur de la fenêtre */
+  overflow-y: auto; /* Ajoutez une barre de défilement vertical si nécessaire */
+    margin-bottom: 10px; /* Ajoutez une marge basse équivalente à la hauteur du pied de page */
+
+  /* Autres styles pour votre page hotelsList */
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <nav class="navbar navbar-expand-lg">
-      <img src="./components/LogoPersonnel.jpg" alt="LogoPersonnel" class="nav-logo">
+      <!-- <img src="./components/LogoPersonnel.jpg" alt="LogoPersonnel" class="nav-logo"> -->
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/hotels">Teranga Hôtel</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,9 +11,6 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link class="nav-link active" aria-current="page" to="/add">Ajouter un hôtel</router-link> 
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/update">Update hôtel</router-link> 
           </li>
           <li class="nav-item">
             <router-link class="nav-link active" aria-current="page" to="/">Vol + hôtel</router-link> 
@@ -26,9 +23,10 @@
       </div>
     </div>
   </nav>
-  </div>
-    <router-view :hotels="hotels" @HotelAdded="addHotel" @HotelUpdateFormList="editHotelForm"
-      @HotelUpdate="saveEditedHotel" :editHotelPros="editedHotel" />
+</div>
+<router-view :hotels="hotels" @HotelAdded="addHotel" @HotelUpdateFormList="editHotelForm"
+@HotelUpdate="saveEditedHotel" :editHotelPros="editedHotel" />
+<FooterHotel></FooterHotel>
 </template>
 
 
@@ -39,6 +37,7 @@ import AddHotelForm from './components/AddHotelForm.vue';
 import HotelsList from './components/HotelsList.vue';
 import UpdateHotelForm from './components/UpdateHotelForm.vue';
 import ModalHotel from './components/ModalHotel.vue';
+import FooterHotel from './components/FooterHotel.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -51,6 +50,9 @@ const router = createRouter({
 });
 
 export default {
+    components: {
+    FooterHotel, // Ajoutez le composant Footer ici pour qu'il soit disponible dans le template
+  },
 
   name: 'App',
   data() {
@@ -177,3 +179,5 @@ export default {
 
 
 </style>
+
+
