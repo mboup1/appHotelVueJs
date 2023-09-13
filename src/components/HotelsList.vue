@@ -5,7 +5,7 @@
         <div class="row justify-content-center" v-if="hotels && hotels.length">
             <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
                 <div class="card custom-card"  >
-                    <img :src="hotel.imageUrl" alt="Image de {{ hotel.name }}"/>
+                    <img src="./LogoPersonnel.jpg" alt="Image de {{ hotel.name }}"/>
                     <div style="height: 140px; padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
                                 <p> {{ truncateText(hotel.description, 40) }}</p>
