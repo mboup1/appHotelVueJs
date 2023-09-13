@@ -19,6 +19,10 @@
                             <input v-model="newHotel.description" type="text" class="form-control" />
                         </div>
                         <div class="form-group mb-3">
+                            <label>Image (lien)</label>
+                            <input v-model="newHotel.imageUrl" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
                             <label>Prix</label>
                             <input v-model="newHotel.price" type="number" class="form-control"/>
                         </div>
@@ -40,7 +44,7 @@
 
 export default {
 
-    name: 'HotelsList',
+    name: 'AddHotelForm',
     data() {
         return {
             newHotel: {
@@ -48,7 +52,8 @@ export default {
                 name: '',
                 description: '',
                 price:null,
-                rating:null,
+                rating: null,
+                imageUrl: '',
             },
         };
     },

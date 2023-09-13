@@ -1,15 +1,15 @@
 
 <template>
     <div id="List" class="pt-5 hotels-list">
-        <h1>Hôtels disponibles</h1>
-        <div class="row justify-content-center">
+        <h1>Hôtels disponibles ({{ this.hotels.length }})</h1>
+        <div class="row justify-content-center" v-if="hotels && hotels.length">
             <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
                 <div class="card custom-card"  >
-                    <img src="./LogoPersonnel.jpg" alt="Image de {{ hotel.name }}" />
+                    <img :src="hotel.imageUrl" alt="Image de {{ hotel.name }}"/>
                     <div style="height: 140px; padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
-                            <p> {{ truncateText(hotel.description, 40) }}</p>
-                        <p>Prix : {{ hotel.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }) }}</p>
+                                <p> {{ truncateText(hotel.description, 40) }}</p>
+                            <p>Prix : {{ hotel.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }) }}</p>
                         <p >Note : <span class="text-warning" v-html="generateStarRating(hotel.rating)"></span></p>
                     </div>
                     <div>
@@ -26,6 +26,8 @@
                 </div>
             </div>
         </div>
+         <!-- Display this message if there are no hotels -->
+            <p class="btn btn-outline-danger  p-3" v-else>Il n'y a pas d'hôtel disponible</p>
     </div>
 </template>
 
@@ -46,6 +48,7 @@ export default {
                 description: '',
                 price: null,
                 rating: null,
+                imageUrl: '',
             },
             hotels: [],
         };
@@ -61,6 +64,7 @@ export default {
             try {
                 const response = await axios.get('http://localhost:8080/hotels'); // Replace with your API endpoint
                 this.hotels = response.data; // Update the hotels data property with fetched data
+                // console.log("response.data : "+JSON.stringify(response.data))
             } catch (error) {
                 console.error('Error fetching hotels:', error);
             }
@@ -94,6 +98,7 @@ export default {
                 description: hotel.description,
                 price: hotel.price,
                 rating: hotel.rating,
+                imageUrl: hotel.imageUrl,                
             };
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },
@@ -109,6 +114,7 @@ export default {
                 description: hotel.description,
                 price: hotel.price,
                 rating: hotel.rating,
+                imageUrl: hotel.imageUrl,
             };
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },

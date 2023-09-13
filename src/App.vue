@@ -63,7 +63,8 @@ export default {
         city: '',
         description: '',
         price: null,
-        rating:null,
+        rating: null,
+        imageUrl:'',
       },
 
       hotelBeingEdited: null,
@@ -74,6 +75,7 @@ export default {
         description: '',
         price: null,
         rating: null,
+        imageUrl: '',
       },
     };
   },
@@ -90,6 +92,7 @@ export default {
             description: '',
             price: null,
             rating: null,
+            imageUrl: '',
           };
         })
         .catch(error => {
@@ -117,6 +120,7 @@ export default {
           description: editedHotel.description,
           price: editedHotel.price,
           rating: editedHotel.rating,
+          imageUrl:  editedHotel.imageUrl,
         };
         const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
 

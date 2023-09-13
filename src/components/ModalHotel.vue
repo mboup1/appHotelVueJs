@@ -36,10 +36,11 @@ export default {
             description: '',
             price: null,
             rating: '',
+            imageUrl: '',
         },
     },
 
-    name: 'HotelsList',
+    name: 'ModalHotel',
     data() {
         return {
             hotelBeingEdited: null, // Index of the hotel being edited
@@ -49,12 +50,14 @@ export default {
                 description: this.editHotelPros.description,
                 price: this.editHotelPros.price,
                 rating: this.editHotelPros.rating,
+                imageUrl: this.editHotelPros.imageUrl,
             },
             members: [],
         };
     },
 
     methods: {
+        
         saveEditedHotel2() {
             this.$emit('HotelUpdate', { ...this.editedHotel });
         },

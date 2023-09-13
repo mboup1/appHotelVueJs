@@ -19,6 +19,10 @@
                             <input v-model="editedHotel.description" type="text" class="form-control" />
                         </div>
                         <div class="form-group mb-3">
+                            <label>Image(lien)</label>
+                            <input v-model="editedHotel.imageUrl" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group mb-3">
                             <label>Prix</label>
                             <input v-model="editedHotel.price" type="number" class="form-control" />
                         </div>
@@ -47,10 +51,11 @@ export default {
             description: '',
             price: null,
             rating: '',
+            imageUrl: '',
         },
     },
 
-    name: 'HotelsList',
+    name: 'UpdateHotelForm',
     data() {
         return {
             hotelBeingEdited: null, // Index of the hotel being edited
@@ -60,6 +65,7 @@ export default {
                 description: this.editHotelPros.description,
                 price: this.editHotelPros.price,
                 rating: this.editHotelPros.rating,
+                imageUrl: this.editHotelPros.imageUrl,
             },
             members: [],
         };
