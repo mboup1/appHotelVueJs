@@ -5,7 +5,7 @@
         <div class="row justify-content-center" v-if="hotels && hotels.length">
             <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
                 <div class="card custom-card"  >
-                    <img src="./LogoPersonnel.jpg" alt="Image de {{ hotel.name }}"/>
+                    <img src="http://localhost:8080/image/1" alt="Image de {{ hotel.name }}"/>
                     <div style="height: 140px; padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
                                 <p> {{ truncateText(hotel.description, 40) }}</p>
@@ -40,7 +40,6 @@ export default {
     name: 'hotelsList',
     data() {
         return {
-            imageSrc: 'https://via.placeholder.com/150/92C952',
             hotelBeingEdited: null, // Index of the hotel being edited
             editedhotel: {
                 city: '',
@@ -50,6 +49,7 @@ export default {
                 rating: null,
                 imageUrl: '',
             },
+
             hotels: [],
         };
     },
@@ -172,7 +172,6 @@ width: auto
 
 .hotels-list {
   height: 100vh; /* Fixez la hauteur de la page à 100% de la hauteur de la fenêtre */
-  overflow-y: auto; /* Ajoutez une barre de défilement vertical si nécessaire */
     margin-bottom: 10px; /* Ajoutez une marge basse équivalente à la hauteur du pied de page */
 
   /* Autres styles pour votre page hotelsList */

@@ -1,6 +1,6 @@
 <template>
-    <div id="AddForm" class="container text-center">
-        <div id="add" class="row text-center mt-5 container ">
+    <div id="AddForm" class="text-center">
+        <div id="add" class="row text-center mt-5">
             <div class="col-12 col-md-10 col-lg-8 col-xl-6 mx-auto ">
                 <div class="bg-white shadow rounded p-4 rounded-5">
                     <h1 class="display-6 text-dark text-center bg-success rounded-4 p-2">Réservation d'une chambre</h1>
@@ -62,7 +62,12 @@ export default {
 </script> 
 
 <style>
+
 #AddForm {
     margin-top: 70px;
+}
+.container{
+    border-radius: 20px;
+    width: 1000px;
 }
 </style>

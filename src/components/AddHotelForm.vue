@@ -26,6 +26,10 @@
                             <label>Note</label>
                             <input v-model="newHotel.rating" type="number" class="form-control" placeholder="Entre 0 et 5"/>
                         </div>
+                        <div class="form-group mb-3">
+                            <label>Image</label>
+                            <input type="file" class="form-control" @change="onFileChangeImage"/>
+                        </div>
                         <div>
                             <button class="btn btn-success me-2" type="submit">Enregistrer</button>
                             <button class="btn btn-danger" style="width: 100px" @click="cancelAdd">Annuler</button>
@@ -37,6 +41,7 @@
     </div>
 </template>
 <script>
+// import axios from 'axios';
 
 export default {
 
@@ -55,8 +60,28 @@ export default {
     },
 
     methods: {
+        onFileChangeImage(e) {
+            // console.log("onFileChangeImage newhotel", this.newHotel)
+            const file = e.target.files[0];
+            this.image = file;
+           
+            //     .then(() => {
+            //         this.hotels.push(formData);
+            //         })
+            //     .catch(error => {
+            //         console.error('Error adding hotel:', error);
+            //     });
+            // this.$router.push('/hotels');
+        },
+
         addHotel2() {
-            this.$emit('HotelAdded', { ...this.newHotel });
+            // console.log("newhotel", this.newHotel)
+            const formData = new FormData();
+            formData.append('image', this.image);
+            // axios.post('http://localhost:8080/image/1', formData)
+
+            this.$emit('HotelAdded', { ...this.newHotel }, formData, this.image);
+
         },
         cancelAdd() {
             this.$router.push('hotels');

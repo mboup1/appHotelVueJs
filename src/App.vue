@@ -26,7 +26,7 @@
 </div>
 <router-view :hotels="hotels" @HotelAdded="addHotel" @HotelUpdateFormList="editHotelForm"
 @HotelUpdate="saveEditedHotel" :editHotelPros="editedHotel" />
-<FooterHotel></FooterHotel>
+<!-- <FooterHotel></FooterHotel> -->
 </template>
 
 
@@ -37,7 +37,7 @@ import AddHotelForm from './components/AddHotelForm.vue';
 import HotelsList from './components/HotelsList.vue';
 import UpdateHotelForm from './components/UpdateHotelForm.vue';
 import ModalHotel from './components/ModalHotel.vue';
-import FooterHotel from './components/FooterHotel.vue';
+// import FooterHotel from './components/FooterHotel.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -50,9 +50,9 @@ const router = createRouter({
 });
 
 export default {
-    components: {
-    FooterHotel, // Ajoutez le composant Footer ici pour qu'il soit disponible dans le template
-  },
+  //   components: {
+  //   FooterHotel, // Ajoutez le composant Footer ici pour qu'il soit disponible dans le template
+  // },
 
   name: 'App',
   data() {
@@ -82,22 +82,24 @@ export default {
 
   methods: {
     //Ajouter un hotel
-    addHotel(newHotel) {
+    addHotel(newHotel, formData, image) {
+      console.log("addhotel", formData, "-----", image)
       axios.post('http://localhost:8080/hotel/id', newHotel)
-        .then(() => {
-          this.hotels.push(newHotel);
-          this.newHotel = {
-            name: '',
-            city: '',
-            description: '',
-            price: null,
-            rating: null,
-            imageUrl: '',
-          };
-        })
-        .catch(error => {
-          console.error('Error adding hotel:', error);
-        });
+      .then(() => {
+        this.hotels.push(newHotel);
+        this.newHotel = {
+          name: '',
+          city: '',
+          description: '',
+          price: null,
+          rating: null,
+          imageUrl: '',
+        };
+      })
+      .catch(error => {
+        console.error('Error adding hotel:', error);
+      });
+      axios.post('http://localhost:8080/image/1', formData)
       this.$router.push('/hotels');
       setTimeout(() => {
         window.location.reload();
