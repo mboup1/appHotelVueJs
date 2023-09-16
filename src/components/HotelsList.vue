@@ -5,8 +5,8 @@
         <div class="row justify-content-center" v-if="hotels && hotels.length">
             <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
                 <div class="card custom-card"  >
-                    <img src="http://localhost:8080/image/1" alt="Image de {{ hotel.name }}"/>
-                    <div style="height: 140px; padding: 5px;" class="card-body" >
+                    <img :src="'http://localhost:8080/image/' + hotel.id" alt="Image de {{ hotel.name }}" class="image" />
+                    <div style="padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
                                 <p> {{ truncateText(hotel.description, 40) }}</p>
                             <p>Prix : {{ hotel.price.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }) }}</p>
@@ -26,7 +26,6 @@
                 </div>
             </div>
         </div>
-         <!-- Display this message if there are no hotels -->
             <p class="btn btn-outline-danger  p-3" v-else>Il n'y a pas d'hôtel disponible</p>
     </div>
 </template>
@@ -47,7 +46,6 @@ export default {
                 description: '',
                 price: null,
                 rating: null,
-                imageUrl: '',
             },
 
             hotels: [],
@@ -60,11 +58,21 @@ export default {
 
     methods: {
 
+        // async fetchImages() {
+        //     try {
+        //         const response = await axios.get('http://localhost:8080/image/4');
+        //         this.images = response.data; //
+        //         // console.log("response.data : "+JSON.stringify(response.data))
+        //     } catch (error) {
+        //         console.error('Error fetching images:', error);
+        //     }
+        // },
         async fetchhotels() {
             try {
                 const response = await axios.get('http://localhost:8080/hotels'); // Replace with your API endpoint
                 this.hotels = response.data; // Update the hotels data property with fetched data
-                // console.log("response.data : "+JSON.stringify(response.data))
+                // const responseData = response.data.map(item => item)
+                // console.log("response.data : "+JSON.stringify(response.data.map(item => item)))
             } catch (error) {
                 console.error('Error fetching hotels:', error);
             }
@@ -76,10 +84,12 @@ export default {
             // if (conf)
                 axios.delete(hotel_API_BASE_URL + hotelId)
                     .then(() => {
-                        console.log("Personne supprimée avec succès!");
+                        //Supprimer l'image de l(hôtel)
+                        axios.delete("http://localhost:8080/image/" + hotelId)
+                        console.log("hôtel et image supprimée avec succès!");
                     })
                     .catch(error => {
-                        console.error("Erreur lors de la suppression de la personne:", error);
+                        console.error("Erreur lors de la suppression de l'hôtel:", error);
                     });
             window.location.reload();
             localStorage.setItem("hotels", JSON.stringify(this.hotels));
@@ -98,7 +108,6 @@ export default {
                 description: hotel.description,
                 price: hotel.price,
                 rating: hotel.rating,
-                imageUrl: hotel.imageUrl,                
             };
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },
@@ -114,7 +123,6 @@ export default {
                 description: hotel.description,
                 price: hotel.price,
                 rating: hotel.rating,
-                imageUrl: hotel.imageUrl,
             };
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },
@@ -150,6 +158,9 @@ export default {
   transition: transform 0.2s;
   width: 350px;
 }
+.card-body{
+    height: 140px;
+}
 
 .card-body p {
     margin-bottom: 5px;
@@ -163,11 +174,15 @@ export default {
 }
 
 #colCard{
-width: auto
+width: auto;
+/* height: 200px; */
 }
 
 #List{
     margin-top: 70px;
+}
+.image{
+    height: 230px;
 }
 
 .hotels-list {

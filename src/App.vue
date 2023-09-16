@@ -64,7 +64,6 @@ export default {
         description: '',
         price: null,
         rating: null,
-        imageUrl:'',
       },
 
       hotelBeingEdited: null,
@@ -75,64 +74,40 @@ export default {
         description: '',
         price: null,
         rating: null,
-        imageUrl: '',
       },
     };
   },
 
   methods: {
+    
     //Ajouter un hotel
     addHotel(newHotel, formData, image) {
-    axios.post('http://localhost:8080/hotel/id', newHotel)
-        .then(response => {
-            response.data;  // Assuming the backend returns the new hotel with its ID.
-            console.log("response.data hotel ", response.data)
+      formData.append('image', image);
 
-            formData.append('image', image);
-            return axios.post(`http://localhost:8080/image/${1}`, formData);
-        })
+      // Essayer d'envoyer l'image d'abord
+      axios.post('http://localhost:8080/image/upload', formData)
         .then(() => {
-            this.hotels.push(newHotel);
-            this.newHotel = {
-                name: '',
-                city: '',
-                description: '',
-                price: null,
-                rating: null,
-                imageUrl: '',
-            };
-            this.$router.push('/hotels');
+          // Si l'envoi de l'image réussit, essayez d'enregistrer les détails de l'hôtel
+          return axios.post('http://localhost:8080/hotel/id', newHotel);
+        })
+        .then(response => {
+          response.data
+          this.hotels.push(newHotel);
+          this.newHotel = {
+            name: '',
+            city: '',
+            description: '',
+            price: null,
+            rating: null,
+          };
+          this.$router.push('/hotels');
         })
         .catch(error => {
-          // console.log("erreur post hotel")
-            console.error('Error:', error);
+          console.log("image non enregistrée")
+          console.error('Error:', error);
         });
-},
+    },
 
-    // addHotel(newHotel, formData, image) {
-    //   console.log("addhotel", formData, "-----", image)
-    //   axios.post('http://localhost:8080/hotel/id', newHotel)
-    //   .then(() => {
-    //     this.hotels.push(newHotel);
-    //     this.newHotel = {
-    //       name: '',
-    //       city: '',
-    //       description: '',
-    //       price: null,
-    //       rating: null,
-    //       imageUrl: '',
-    //     };
-    //   })
-    //   .catch(error => {
-    //     console.error('Error adding hotel:', error);
-    //   });
-    //   axios.post('http://localhost:8080/image/id', formData)
-    //   console.log("after axios image")
-    //   this.$router.push('/hotels');
-    //   // setTimeout(() => {
-    //   //   window.location.reload();
-    //   // },);
-    // },
     // //Modification remplir les inputs en cliquant sur le bouton modifier
     editHotelForm(index, updateHotelList, IdBackList) {
       this.editedHotel = updateHotelList
@@ -150,7 +125,6 @@ export default {
           description: editedHotel.description,
           price: editedHotel.price,
           rating: editedHotel.rating,
-          imageUrl:  editedHotel.imageUrl,
         };
         const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
 

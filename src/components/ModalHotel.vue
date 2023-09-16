@@ -45,7 +45,6 @@ export default {
             description: '',
             price: null,
             rating: '',
-            imageUrl: '',
         },
     },
 
@@ -61,7 +60,6 @@ export default {
                 description: this.editHotelPros.description,
                 price: this.editHotelPros.price,
                 rating: this.editHotelPros.rating,
-                imageUrl: this.editHotelPros.imageUrl,
             },
             members: [],
         };

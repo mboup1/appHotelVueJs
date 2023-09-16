@@ -45,7 +45,6 @@ export default {
                 email: '',
                 phone:null,
                 rating: null,
-                imageUrl: '',
             },
         };
     },
