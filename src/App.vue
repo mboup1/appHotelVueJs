@@ -2,31 +2,42 @@
   <div id="nav">
     <nav class="navbar navbar-expand-lg">
       <!-- <img src="./components/LogoPersonnel.jpg" alt="LogoPersonnel" class="nav-logo"> -->
-    <div class="container-fluid">
-      <router-link class="navbar-brand" to="/hotels">Teranga Hôtel</router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/add">Ajouter un hôtel</router-link> 
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/">Vol + hôtel</router-link> 
-          </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="chercher un hôtel" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Recherche</button>
-        </form>
+      <div class="container-fluid">
+        <router-link class="navbar-brand" to="/hotels">Teranga Hôtel</router-link>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <router-link class="nav-link active" aria-current="page" to="/add">Ajouter un hôtel</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link active" aria-current="page" to="/">Vol + hôtel</router-link>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="chercher un hôtel" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Recherche</button>
+          </form>
+        </div>
       </div>
-    </div>
-  </nav>
-</div>
-<router-view :hotels="hotels" @HotelAdded="addHotel" @HotelUpdateFormList="editHotelForm"
-@HotelUpdate="saveEditedHotel" :editHotelPros="editedHotel" />
-<!-- <FooterHotel></FooterHotel> -->
+    </nav>
+  </div>
+  <router-view @HotelAdded="addHotel" :hotelsPros="hotels" @HotelUpdateFormList="editHotelFormList"
+    @HotelUpdateFormEmit="saveUpdateHotel" :editHotelPros="editedHotel" />
+  <!-- <FooterHotel></FooterHotel> 
+  passage données enfant addHotel - parent
+  @HotelAdded="addHotel"
+  :hotels="hotels" 
+   //Emit :Infos venant HotelsList => App.vue => update sous forme de props (editHotelFormList)
+@HotelUpdateFormList="editHotelFormList"
+//Récupération doonées saisies dans les inputs de UpdateHotelForm pour la mise à jour de l'hôtel
+@HotelUpdateFormEmit="saveUpdateHotel" 
+Passage des données de mise à jour de App.vue =>HotelList sous forme de props
+:editHotelPros="editedHotel"
+-->
 </template>
 
 
@@ -79,13 +90,13 @@ export default {
   },
 
   methods: {
-    
+
     //Ajouter un hotel
     addHotel(newHotel, formData, image) {
       formData.append('image', image);
 
       // Essayer d'envoyer l'image d'abord
-      axios.post('http://localhost:8080/image/upload', formData)
+      axios.post('http://localhost:8080/image/id', formData)
         .then(() => {
           // Si l'envoi de l'image réussit, essayez d'enregistrer les détails de l'hôtel
           return axios.post('http://localhost:8080/hotel/id', newHotel);
@@ -108,16 +119,15 @@ export default {
         });
     },
 
-    // //Modification remplir les inputs en cliquant sur le bouton modifier
-    editHotelForm(index, updateHotelList, IdBackList) {
-      this.editedHotel = updateHotelList
-      this.hotelBeingEdited = index;
-      this.IdBack = IdBackList
-    },
-
-    saveEditedHotel(editedHotel) {
+    //Enregistrer les modifications des données de l'hotel venant de UpdateHotelForm
+    saveUpdateHotel(editedHotel, formData, image) {
+      if (image) {
+        formData.append('image', image);
+        axios.put(`http://localhost:8080/image/update/${this.IdBack}`, formData);
+      }
 
       if (this.hotelBeingEdited !== null) {
+        //Récup données venant de App.vue sous forme de props
         const updatedHotel = {
           id: this.IdBack,
           name: editedHotel.name,
@@ -126,8 +136,8 @@ export default {
           price: editedHotel.price,
           rating: editedHotel.rating,
         };
-        const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
 
+        const BASE_URL = `http://localhost:8080/hotel/${this.IdBack}`;
         axios.put(BASE_URL, updatedHotel)
           .then(() => {
             this.hotelBeingEdited = null;
@@ -137,6 +147,12 @@ export default {
             console.error('Error updating hotel:', error);
           });
       }
+    },
+    // //Modification, remplir les inputs en cliquant sur le bouton modifier
+    editHotelFormList(index, updateHotelList, IdBackList) {
+      this.editedHotel = updateHotelList
+      this.hotelBeingEdited = index;
+      this.IdBack = IdBackList
     },
   },
   router
@@ -150,8 +166,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 #nav {
-  font-size: 24px; /* Augmenter la taille du texte à 24px */
+  font-size: 24px;
+  /* Augmenter la taille du texte à 24px */
   position: fixed;
   z-index: 1;
   top: 0;
@@ -164,28 +182,32 @@ export default {
 #nav a {
   color: blue;
   text-decoration: none;
-  font-size: 24px; /* Augmenter la taille du texte à 24px */
+  font-size: 24px;
+  /* Augmenter la taille du texte à 24px */
 }
 
 /* Style pour les liens actifs */
 #nav .router-link-exact-active {
   color: #007bff;
   font-size: 25px;
-  border: 2px solid blue; /* Ajouter une bordure bleue */
-  padding: 5px 10px; /* Espacement intérieur pour la bordure */
-  border-radius: 10px; /* Ajouter une bordure arrondie */
+  border: 2px solid blue;
+  /* Ajouter une bordure bleue */
+  padding: 5px 10px;
+  /* Espacement intérieur pour la bordure */
+  border-radius: 10px;
+  /* Ajouter une bordure arrondie */
 }
 
 .nav-logo {
-  margin-right: 10px; /* Marge à droite de la forme circulaire */
+  margin-right: 10px;
+  /* Marge à droite de la forme circulaire */
   margin-left: 10px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 16px; /* Marge à droite de l'image */
+  margin-right: 16px;
+  /* Marge à droite de l'image */
 }
-
-
 </style>
 
 

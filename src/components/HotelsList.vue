@@ -57,42 +57,13 @@ export default {
     },
 
     methods: {
-
-        // async fetchImages() {
-        //     try {
-        //         const response = await axios.get('http://localhost:8080/image/4');
-        //         this.images = response.data; //
-        //         // console.log("response.data : "+JSON.stringify(response.data))
-        //     } catch (error) {
-        //         console.error('Error fetching images:', error);
-        //     }
-        // },
         async fetchhotels() {
             try {
                 const response = await axios.get('http://localhost:8080/hotels'); // Replace with your API endpoint
                 this.hotels = response.data; // Update the hotels data property with fetched data
-                // const responseData = response.data.map(item => item)
-                // console.log("response.data : "+JSON.stringify(response.data.map(item => item)))
             } catch (error) {
                 console.error('Error fetching hotels:', error);
             }
-        },
-
-        deletehotel(hotelId) {
-            const hotel_API_BASE_URL = "http://localhost:8080/hotel/";
-            // let conf = confirm(`Etes-vous sûr de vouloir supprimer ?`);
-            // if (conf)
-                axios.delete(hotel_API_BASE_URL + hotelId)
-                    .then(() => {
-                        //Supprimer l'image de l(hôtel)
-                        axios.delete("http://localhost:8080/image/" + hotelId)
-                        console.log("hôtel et image supprimée avec succès!");
-                    })
-                    .catch(error => {
-                        console.error("Erreur lors de la suppression de l'hôtel:", error);
-                    });
-            window.location.reload();
-            localStorage.setItem("hotels", JSON.stringify(this.hotels));
         },
 
         //Modification remplir les inputs en cliquant sur le bouton modifier
@@ -109,6 +80,7 @@ export default {
                 price: hotel.price,
                 rating: hotel.rating,
             };
+            //Faire passer les infos => App.vue => update sous forme de props
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },
         UpdateHotelModal(index) {
@@ -124,6 +96,7 @@ export default {
                 price: hotel.price,
                 rating: hotel.rating,
             };
+            //Passer les données de HotelList à App.vue
             this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
         },
         
@@ -144,6 +117,23 @@ export default {
             const emptyStars = maxStars - fullStars - (halfStar ? 1 : 0);
             const stars = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(emptyStars);
             return stars;
+        },
+
+         deletehotel(hotelId) {
+            const hotel_API_BASE_URL = "http://localhost:8080/hotel/";
+            // let conf = confirm(`Etes-vous sûr de vouloir supprimer ?`);
+            // if (conf)
+            axios.delete(hotel_API_BASE_URL + hotelId)
+                .then(() => {
+                    //Supprimer l'image de l(hôtel)
+                    axios.delete("http://localhost:8080/image/" + hotelId)
+                    console.log("hôtel et image supprimée avec succès!");
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la suppression de l'hôtel:", error);
+                });
+            window.location.reload();
+            localStorage.setItem("hotels", JSON.stringify(this.hotels));
         },
     },
 };

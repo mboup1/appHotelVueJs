@@ -60,25 +60,13 @@ export default {
 
     methods: {
         onFileChangeImage(e) {
-            // console.log("onFileChangeImage newhotel", this.newHotel)
             const file = e.target.files[0];
             this.image = file;
-           
-            //     .then(() => {
-            //         this.hotels.push(formData);
-            //         })
-            //     .catch(error => {
-            //         console.error('Error adding hotel:', error);
-            //     });
-            // this.$router.push('/hotels');
         },
 
         addHotel2() {
-            // console.log("newhotel", this.newHotel)
             const formData = new FormData();
             formData.append('image', this.image);
-            // axios.post('http://localhost:8080/image/1', formData)
-
             this.$emit('HotelAdded', { ...this.newHotel }, formData, this.image);
 
         },

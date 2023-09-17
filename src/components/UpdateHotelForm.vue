@@ -24,7 +24,12 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Note</label>
-                            <input v-model="editedHotel.rating" type="number" class="form-control" placeholder="Entre 0 et 5" />
+                            <input v-model="editedHotel.rating" type="number" class="form-control"
+                                placeholder="Entre 0 et 5" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Image</label>
+                            <input type="file" class="form-control" @change="onFileChangeImage" />
                         </div>
                         <div>
                             <button class="btn btn-success me-2 " style="width: 100px" type="submit">Enregistrer</button>
@@ -66,8 +71,15 @@ export default {
     },
 
     methods: {
+        onFileChangeImage(e) {
+            const file = e.target.files[0];
+            this.image = file;
+        },
+
         saveEditedHotel2() {
-            this.$emit('HotelUpdate', { ...this.editedHotel });
+            const formData = new FormData();
+            formData.append('image', this.image);
+            this.$emit('HotelUpdateFormEmit', { ...this.editedHotel }, formData, this.image);
         },
 
         cancelEdit() {
