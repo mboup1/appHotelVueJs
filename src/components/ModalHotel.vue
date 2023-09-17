@@ -54,13 +54,13 @@ export default {
             arrivalDate: null, 
             departureDate: null,
             hotelBeingEdited: null, // Index of the hotel being edited
-            editedHotel: {
-                name: this.editHotelPros.name,
-                city: this.editHotelPros.city,
-                description: this.editHotelPros.description,
-                price: this.editHotelPros.price,
-                rating: this.editHotelPros.rating,
-            },
+            // editedHotel: {
+            //     name: this.editHotelPros.name,
+            //     city: this.editHotelPros.city,
+            //     description: this.editHotelPros.description,
+            //     price: this.editHotelPros.price,
+            //     rating: this.editHotelPros.rating,
+            // },
             members: [],
         };
     },

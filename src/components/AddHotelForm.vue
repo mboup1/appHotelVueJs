@@ -27,9 +27,11 @@
                             <input v-model="newHotel.rating" type="number" class="form-control" placeholder="Entre 0 et 5"/>
                         </div>
                         <div class="form-group mb-3">
-                            <label>Image</label>
+                            <label>Image *</label>
                             <input type="file" class="form-control" @change="onFileChangeImage"/>
                         </div>
+                        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
                         <div>
                             <button class="btn btn-success me-2" type="submit">Enregistrer</button>
                             <button class="btn btn-danger" style="width: 100px" @click="cancelAdd">Annuler</button>
@@ -55,6 +57,8 @@ export default {
                 price:null,
                 rating: null,
             },
+            mage: null, // ensure you have this defined
+            errorMessage: '', // add this line
         };
     },
 
@@ -65,6 +69,10 @@ export default {
         },
 
         addHotel2() {
+            if (!this.image) {
+                this.errorMessage = "Veuillez insérer une image";
+                return;
+            }
             const formData = new FormData();
             formData.append('image', this.image);
             this.$emit('HotelAdded', { ...this.newHotel }, formData, this.image);

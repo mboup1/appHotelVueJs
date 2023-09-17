@@ -142,6 +142,9 @@ export default {
           .then(() => {
             this.hotelBeingEdited = null;
             this.$router.push('/hotels');
+                setTimeout(() => {
+                  window.location.reload();
+                },);
           })
           .catch(error => {
             console.error('Error updating hotel:', error);
