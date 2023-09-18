@@ -46,6 +46,7 @@ export default {
                 description: '',
                 price: null,
                 rating: null,
+
             },
 
             hotels: [],
@@ -95,9 +96,12 @@ export default {
                 description: hotel.description,
                 price: hotel.price,
                 rating: hotel.rating,
+                id: hotel.id,
+
             };
             //Passer les données de HotelList à App.vue
-            this.$emit('hotelUpdateFormList', index, this.editedhotel, IdBackList);
+            this.$emit('hotelModalFormList', index, this.editedhotel, IdBackList);
+            
         },
         
         addForm() {

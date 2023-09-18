@@ -25,17 +25,20 @@
       </div>
     </nav>
   </div>
-  <router-view @HotelAdded="addHotel" :hotelsPros="hotels" @HotelUpdateFormList="editHotelFormList"
-    @HotelUpdateFormEmit="saveUpdateHotel" :editHotelPros="editedHotel" />
+  <router-view @HotelAdded="addHotel" 
+  :hotelsPros="hotels" 
+  @hotelModalFormList="editModalForm"
+  @HotelUpdateFormEmit="saveUpdateHotel" 
+  :editHotelPros="editedHotel" />
   <!-- <FooterHotel></FooterHotel> 
-  passage données enfant addHotel - parent
+  Enregistrer les données d'un hotel de addHotel à App.vue
   @HotelAdded="addHotel"
   :hotels="hotels" 
-   //Emit :Infos venant HotelsList => App.vue => update sous forme de props (editHotelFormList)
-@HotelUpdateFormList="editHotelFormList"
-//Récupération doonées saisies dans les inputs de UpdateHotelForm pour la mise à jour de l'hôtel
+//Emit :Infos venant HotelsList => App.vue => update sous forme de props (editHotelFormList), pour modifier un hotel
+@hotelModalFormList="editHotelFormList"
+//Emit : Récupérer les doonées saisies d'un hotel dans les inputs de UpdateHotelForm pour la mise à jour de l'hôtel
 @HotelUpdateFormEmit="saveUpdateHotel" 
-Passage des données de mise à jour de App.vue =>HotelList sous forme de props
+Passage des données de mise à jour d un hotel de App.vue =>UpdateHotel/ModalHotel sous forme de props
 :editHotelPros="editedHotel"
 -->
 </template>
@@ -125,7 +128,6 @@ export default {
         formData.append('image', image);
         axios.put(`http://localhost:8080/image/update/${this.IdBack}`, formData);
       }
-
       if (this.hotelBeingEdited !== null) {
         //Récup données venant de App.vue sous forme de props
         const updatedHotel = {
@@ -151,8 +153,8 @@ export default {
           });
       }
     },
-    // //Modification, remplir les inputs en cliquant sur le bouton modifier
-    editHotelFormList(index, updateHotelList, IdBackList) {
+    // //Remplir les <p> deModalHotel en cliquant sur le bouton Reserver
+    editModalForm(index, updateHotelList, IdBackList) {
       this.editedHotel = updateHotelList
       this.hotelBeingEdited = index;
       this.IdBack = IdBackList

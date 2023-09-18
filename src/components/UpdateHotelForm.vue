@@ -66,7 +66,7 @@ export default {
                 price: this.editHotelPros.price,
                 rating: this.editHotelPros.rating,
             },
-            members: [],
+            // members: [],
         };
     },
 

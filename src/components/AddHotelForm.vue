@@ -28,10 +28,13 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Image *</label>
-                            <input type="file" class="form-control" @change="onFileChangeImage"/>
+                            <input type="file" class="form-control mb-3" @change="onFileChangeImage" ref="imageInput"/>
+                            <!-- Aperçu de l'image ajoutée -->
+                            <img v-if="imageSrc" :src="imageSrc" alt="Preview Image" style="height: 150px; width: 200px;"/>
+                        </div>
+                        <div>                            
                         </div>
                         <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-
                         <div>
                             <button class="btn btn-success me-2" type="submit">Enregistrer</button>
                             <button class="btn btn-danger" style="width: 100px" @click="cancelAdd">Annuler</button>
@@ -50,6 +53,7 @@ export default {
     name: 'AddHotelForm',
     data() {
         return {
+            imageSrc: '',
             newHotel: {
                 city: '',
                 name: '',
@@ -57,26 +61,40 @@ export default {
                 price:null,
                 rating: null,
             },
-            mage: null, // ensure you have this defined
+            image: null, // ensure you have this defined
             errorMessage: '', // add this line
         };
     },
 
     methods: {
+
         onFileChangeImage(e) {
             const file = e.target.files[0];
             this.image = file;
+            this.previewImage()
         },
 
         addHotel2() {
             if (!this.image) {
-                this.errorMessage = "Veuillez insérer une image";
+                this.errorMessage = "Veuillez ajouter une image";
                 return;
             }
             const formData = new FormData();
             formData.append('image', this.image);
             this.$emit('HotelAdded', { ...this.newHotel }, formData, this.image);
 
+        },
+        previewImage() {
+            const input = this.$refs.imageInput;
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.imageSrc = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
         },
         cancelAdd() {
             this.$router.push('hotels');
