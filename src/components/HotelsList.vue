@@ -100,7 +100,7 @@ export default {
 
             };
             //Passer les données de HotelList à App.vue
-            this.$emit('hotelModalFormList', index, this.editedhotel, IdBackList);
+            this.$emit('HotelUpdateFormList', index, this.editedhotel, IdBackList);
             
         },
         

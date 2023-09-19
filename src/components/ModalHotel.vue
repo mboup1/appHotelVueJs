@@ -8,7 +8,7 @@
                 </div>
                 <hr/>
                 <div>
-                    <p><span>Nom</span> : {{ this.editHotelPros.name }}</p>
+                    <p><span>Nom</span> : {{ loadedData }}</p>
                 </div>
                 <div>
                     <p><span>Ville</span> : {{ this.editHotelPros.city }}</p>
@@ -59,8 +59,16 @@ export default {
     name: 'ModalHotel',
     data() {
         return {
+            loadedData: {
+                name: "",
+                city: "",
+                description: "",
+                price: null,
+                rating: null,
+                id: null
+            },
             dataToSave: JSON.stringify(this.editHotelPros),
-            loadedData: "",
+            // loadedData: "",
             
             arrivalDate: null, 
             departureDate: null,
@@ -98,11 +106,21 @@ export default {
     },
 
     mounted() {
-    if (!sessionStorage.getItem("myData")) {
-        sessionStorage.setItem("myData", this.dataToSave);
-    }
-    this.loadData();
-},
+        if (!sessionStorage.getItem("myData")) {
+            sessionStorage.setItem("myData", this.dataToSave);
+        }
+        this.loadData();
+    },
+//     mounted() {
+//     const existingData = sessionStorage.getItem("myData");
+
+//     if (!existingData || (existingData && existingData !== this.dataToSave)) {
+//         sessionStorage.setItem("myData", this.dataToSave);
+//     }
+
+//     this.loadData();
+// },
+
 
     methods: {
         saveData() {

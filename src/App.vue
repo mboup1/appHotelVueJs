@@ -27,7 +27,7 @@
   </div>
   <router-view @HotelAdded="addHotel" 
   :hotelsPros="hotels" 
-  @hotelModalFormList="editModalForm"
+  @HotelUpdateFormList ="editModalForm"
   @HotelUpdateFormEmit="saveUpdateHotel" 
   :editHotelPros="editedHotel" />
   <!-- <FooterHotel></FooterHotel> 
