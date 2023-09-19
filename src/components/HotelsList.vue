@@ -5,7 +5,7 @@
         <div class="row justify-content-center" v-if="hotels && hotels.length">
             <div v-for="(hotel, index) in hotels" :key="index" id="colCard" class=" col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
                 <div class="card custom-card"  >
-                    <img :src="'http://localhost:8080/image/' + hotel.id" alt="Image de {{ hotel.name }}" class="image" />
+                    <img :src="'http://localhost:8080/image/' + hotel.id" alt="Image de {{ hotel.name }}" class="image"  @click="UpdateHotelModal(index)">
                     <div style="padding: 5px;" class="card-body" >
                             <h3> {{ truncateText(hotel.name, 15) }} - {{ truncateText(hotel.city, 10) }}</h3>
                                 <p> {{ truncateText(hotel.description, 40) }}</p>
@@ -55,6 +55,8 @@ export default {
 
     mounted() {
         this.fetchhotels(); // Fetch hotels when the component is mounted
+        // console.log("this.hotels : ", (this.hotels))
+
     },
 
     methods: {
@@ -62,6 +64,7 @@ export default {
             try {
                 const response = await axios.get('http://localhost:8080/hotels'); // Replace with your API endpoint
                 this.hotels = response.data; // Update the hotels data property with fetched data
+                
             } catch (error) {
                 console.error('Error fetching hotels:', error);
             }
@@ -177,6 +180,7 @@ width: auto;
 }
 .image{
     height: 230px;
+    cursor: pointer;
 }
 
 .hotels-list {

@@ -8,7 +8,7 @@
                 </div>
                 <hr/>
                 <div>
-                    <p><span>Nom</span> : {{ loadedData }}</p>
+                    <p><span>Nom</span> : {{ this.editHotelPros.name }}</p>
                 </div>
                 <div>
                     <p><span>Ville</span> : {{ this.editHotelPros.city }}</p>
@@ -19,7 +19,14 @@
                 <div>
                     <p><span>Prix</span> : {{ this.editHotelPros.price }} €</p>
                 </div>
-                <div class="inline-inputs">
+                <!-- <div>
+                   <input v-model="dataToSave" placeholder="Données à sauvegarder" />
+                   <button @click="saveData">Sauvegarder dans sessionStorage</button>
+
+                   <button @click="loadData">Charger depuis sessionStorage</button>
+                   <div v-if="loadedData">Données chargées: {{ loadedData }}</div>
+               </div> -->
+                <div class="inline-inputs mt-5">
                     <p><span>Arrivée</span> : <input type="date" v-model="arrivalDate" :min="today"></p>
                     <p><span>Départ</span> : <input type="date" v-model="departureDate" :min="departureDateMin"></p>
                     <p>Nombre de jours : {{ numberOfDays }}</p>
@@ -32,13 +39,6 @@
                     <button class="btn btn-dark" style="width: 100px" @click="cancelEdit">Accueil</button>
                 </div>
 
-                 <div>
-                    <input v-model="dataToSave" placeholder="Données à sauvegarder" />
-                    <button @click="saveData">Sauvegarder dans sessionStorage</button>
-
-                    <button @click="loadData">Charger depuis sessionStorage</button>
-                    <div v-if="loadedData">Données chargées: {{ loadedData }}</div>
-                </div>
         </div>
     </div>
 </template>
@@ -48,14 +48,13 @@
 export default {
     props: {
         editHotelPros: {
-            // name: '',
-            // city: '',
-            // description: '',
-            // price: null,
-            // rating: '',
+            name: '',
+            city: '',
+            description: '',
+            price: null,
+            rating: null,
         },
     },
-
     name: 'ModalHotel',
     data() {
         return {
@@ -68,18 +67,13 @@ export default {
                 id: null
             },
             dataToSave: JSON.stringify(this.editHotelPros),
-            // loadedData: "",
-            
             arrivalDate: null, 
             departureDate: null,
+            // loadedData: "",
             // hotelBeingEdited: null, // Index of the hotel being edited
-            editedHotel: {
-                name: this.editHotelPros.name,
-                city: this.editHotelPros.city,
-                description: this.editHotelPros.description,
-                price: this.editHotelPros.price,
-                rating: this.editHotelPros.rating,
-            },
+            // editedHotel: {
+            //     ...this.editHotelPros
+            // },
         };
     },
 
@@ -105,38 +99,44 @@ export default {
         }
     },
 
+    // mounted() {
+    //     if (!sessionStorage.getItem("myData")) {
+    //         sessionStorage.setItem("myData", this.dataToSave);
+    //     }
+    //     this.loadData();
+    // },
     mounted() {
-        if (!sessionStorage.getItem("myData")) {
+        const existingData = sessionStorage.getItem("myData");
+        //Si les données de l'hotel changes et non nulles alors mettre à jour sessionStorage
+        if (!this.arePropsEmpty() && (!existingData || (existingData && existingData !== this.dataToSave))) {
             sessionStorage.setItem("myData", this.dataToSave);
         }
+
         this.loadData();
     },
-//     mounted() {
-//     const existingData = sessionStorage.getItem("myData");
-
-//     if (!existingData || (existingData && existingData !== this.dataToSave)) {
-//         sessionStorage.setItem("myData", this.dataToSave);
-//     }
-
-//     this.loadData();
-// },
 
 
     methods: {
+        arePropsEmpty() {
+            for (let key in this.editHotelPros) {
+                if (!this.editHotelPros[key]) {
+                    return true; // Returns true if any of the prop's value is empty or falsy.
+                }
+            }
+            return false; // Returns false if all prop values are not empty.
+        },
+
         saveData() {
             sessionStorage.setItem("myData", this.dataToSave);
-            alert("Données sauvegardées!");
+            // alert("Données sauvegardées!");
         },
         loadData() {
             this.loadedData = sessionStorage.getItem("myData") || "Aucune donnée trouvée";
         },
     
         bookRoomFun() {
-            // const princeInt = parseInt(this.editHotelPros.price);
-            console.log("editHotelPros : ", this.editHotelPros);
-
+            // console.log("editHotelPros : ", this.editHotelPros);
             this.$router.push('/bookroom');
-           
         },
         cancelEdit() {
             this.$router.push('hotels');

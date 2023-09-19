@@ -28,8 +28,10 @@
                                 placeholder="Entre 0 et 5" />
                         </div>
                         <div class="form-group mb-3">
-                            <label>Image</label>
-                            <input type="file" class="form-control" @change="onFileChangeImage" />
+                            <label>Image *</label>
+                            <input type="file" class="form-control mb-3" @change="onFileChangeImage" ref="imageInput"/>
+                            <!-- Aperçu de l'image ajoutée -->
+                            <img v-if="imageSrc" :src="imageSrc" alt="Preview Image" style="height: 150px; width: 200px;"/>
                         </div>
                         <div>
                             <button class="btn btn-success me-2 " style="width: 100px" type="submit">Enregistrer</button>
@@ -51,13 +53,14 @@ export default {
             city: '',
             description: '',
             price: null,
-            rating: '',
+            rating: null,
         },
     },
 
     name: 'UpdateHotelForm',
     data() {
         return {
+            imageSrc: '',
             hotelBeingEdited: null, // Index of the hotel being edited
             editedHotel: {
                 name: this.editHotelPros.name,
@@ -74,12 +77,25 @@ export default {
         onFileChangeImage(e) {
             const file = e.target.files[0];
             this.image = file;
+            this.previewImage()
         },
 
         saveEditedHotel2() {
             const formData = new FormData();
             formData.append('image', this.image);
             this.$emit('HotelUpdateFormEmit', { ...this.editedHotel }, formData, this.image);
+        },
+        previewImage() {
+            const input = this.$refs.imageInput;
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.imageSrc = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
         },
 
         cancelEdit() {

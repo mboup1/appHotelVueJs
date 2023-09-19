@@ -31,9 +31,7 @@
                             <input type="file" class="form-control mb-3" @change="onFileChangeImage" ref="imageInput"/>
                             <!-- Aperçu de l'image ajoutée -->
                             <img v-if="imageSrc" :src="imageSrc" alt="Preview Image" style="height: 150px; width: 200px;"/>
-                        </div>
-                        <div>                            
-                        </div>
+                        </div>                    
                         <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
                         <div>
                             <button class="btn btn-success me-2" type="submit">Enregistrer</button>
