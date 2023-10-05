@@ -34,13 +34,13 @@
   Enregistrer les données d'un hotel de addHotel à App.vue
   @HotelAdded="addHotel"
   :hotels="hotels" 
-//Emit :Infos venant HotelsList => App.vue => update sous forme de props (editHotelFormList), pour modifier un hotel
-@hotelModalFormList="editHotelFormList"
-//Emit : Récupérer les doonées saisies d'un hotel dans les inputs de UpdateHotelForm pour la mise à jour de l'hôtel
-@HotelUpdateFormEmit="saveUpdateHotel" 
-Passage des données de mise à jour d un hotel de App.vue =>UpdateHotel/ModalHotel sous forme de props
-:editHotelPros="editedHotel"
--->
+  //Emit :Infos venant HotelsList => App.vue => update sous forme de props (editHotelFormList), pour modifier un hotel
+  @hotelModalFormList="editHotelFormList"
+  //Emit : Récupérer les doonées saisies d'un hotel dans les inputs de UpdateHotelForm pour la mise à jour de l'hôtel
+  @HotelUpdateFormEmit="saveUpdateHotel" 
+  Passage des données de mise à jour d un hotel de App.vue =>UpdateHotel/ModalHotel sous forme de props
+  :editHotelPros="editedHotel"
+  -->
 </template>
 
 
@@ -174,7 +174,6 @@ export default {
 
 #nav {
   font-size: 24px;
-  /* Augmenter la taille du texte à 24px */
   position: fixed;
   z-index: 1;
   top: 0;
@@ -183,35 +182,27 @@ export default {
   background-color: lightgrey;
 }
 
-/* Style pour les liens dans la barre de navigation */
 #nav a {
   color: blue;
   text-decoration: none;
   font-size: 24px;
-  /* Augmenter la taille du texte à 24px */
 }
 
-/* Style pour les liens actifs */
 #nav .router-link-exact-active {
   color: #007bff;
   font-size: 25px;
   border: 2px solid blue;
-  /* Ajouter une bordure bleue */
   padding: 5px 10px;
-  /* Espacement intérieur pour la bordure */
   border-radius: 10px;
-  /* Ajouter une bordure arrondie */
 }
 
 .nav-logo {
   margin-right: 10px;
-  /* Marge à droite de la forme circulaire */
   margin-left: 10px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 16px;
-  /* Marge à droite de l'image */
 }
 </style>
 

@@ -32,7 +32,7 @@
 
 <script>
 
-import axios from 'axios'; // Import the axios library
+import axios from 'axios';
 
 export default {
 
@@ -54,7 +54,7 @@ export default {
     },
 
     mounted() {
-        this.fetchhotels(); // Fetch hotels when the component is mounted
+        this.fetchhotels();
         // console.log("this.hotels : ", (this.hotels))
 
     },
@@ -62,15 +62,15 @@ export default {
     methods: {
         async fetchhotels() {
             try {
-                const response = await axios.get('http://localhost:8080/hotels'); // Replace with your API endpoint
-                this.hotels = response.data; // Update the hotels data property with fetched data
+                const response = await axios.get('http://localhost:8080/hotels');
+                this.hotels = response.data;
                 
             } catch (error) {
                 console.error('Error fetching hotels:', error);
             }
         },
 
-        //Modification remplir les inputs en cliquant sur le bouton modifier
+        //Modification; remplir les inputs en cliquant sur le bouton modifier
         edit(index) {
             this.$router.push('/update');
 
@@ -104,7 +104,6 @@ export default {
             };
             //Passer les données de HotelList à App.vue
             this.$emit('HotelUpdateFormList', index, this.editedhotel, IdBackList);
-            
         },
         
         addForm() {
@@ -132,7 +131,6 @@ export default {
             // if (conf)
             axios.delete(hotel_API_BASE_URL + hotelId)
                 .then(() => {
-                    //Supprimer l'image de l(hôtel)
                     axios.delete("http://localhost:8080/image/" + hotelId)
                     console.log("hôtel et image supprimée avec succès!");
                 })
@@ -184,10 +182,7 @@ width: auto;
 }
 
 .hotels-list {
-  height: 100vh; /* Fixez la hauteur de la page à 100% de la hauteur de la fenêtre */
+    height: 100vh; /* Fixez la hauteur de la page à 100% de la hauteur de la fenêtre */
     margin-bottom: 10px; /* Ajoutez une marge basse équivalente à la hauteur du pied de page */
-
-  /* Autres styles pour votre page hotelsList */
 }
-
 </style>

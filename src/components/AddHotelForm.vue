@@ -59,8 +59,8 @@ export default {
                 price:null,
                 rating: null,
             },
-            image: null, // ensure you have this defined
-            errorMessage: '', // add this line
+            image: null,
+            errorMessage: '',
         };
     },
 
